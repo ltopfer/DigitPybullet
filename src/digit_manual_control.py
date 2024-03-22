@@ -4,10 +4,14 @@ import time
 import pybullet_data
 
 p.connect(p.GUI)
+p.setGravity(0, 0, -9.8)
 p.setAdditionalSearchPath('..')
-humanoid = p.loadURDF("urdf/digit_model.urdf",useFixedBase=True) 
+p.setAdditionalSearchPath(pybullet_data.getDataPath())
+fixed = False
+humanoid = p.loadURDF("urdf/digit_model.urdf", useFixedBase=fixed, basePosition=[0, 0, 1])
+plane = p.loadURDF("plane.urdf") 
 
-gravId = p.addUserDebugParameter("gravity", -10, 10, 0)
+# gravId = p.addUserDebugParameter("gravity", -10, 10, 0)
 jointIds = []
 paramIds = []
 
@@ -26,9 +30,10 @@ for j in range(p.getNumJoints(humanoid)):
 
 p.setRealTimeSimulation(1)
 while (1):
-  p.setGravity(0, 0, p.readUserDebugParameter(gravId))
+  # p.setGravity(0, 0, p.readUserDebugParameter(gravId))
   for i in range(len(paramIds)):
     c = paramIds[i]
     targetPos = p.readUserDebugParameter(c)
     p.setJointMotorControl2(humanoid, jointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+  p.stepSimulation()
   time.sleep(0.01)
