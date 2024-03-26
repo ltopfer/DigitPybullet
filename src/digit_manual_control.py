@@ -7,7 +7,7 @@ p.connect(p.GUI)
 p.setGravity(0, 0, -9.8)
 p.setAdditionalSearchPath('..')
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
-fixed = False
+fixed = True #False
 humanoid = p.loadURDF("urdf/digit_model.urdf", useFixedBase=fixed, basePosition=[0, 0, 1])
 plane = p.loadURDF("plane.urdf") 
 
@@ -36,4 +36,4 @@ while (1):
     targetPos = p.readUserDebugParameter(c)
     p.setJointMotorControl2(humanoid, jointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
   p.stepSimulation()
-  time.sleep(0.01)
+  time.sleep(0.001)
